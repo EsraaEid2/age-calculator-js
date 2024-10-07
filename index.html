@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Age Calculator</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>Age Calculator</h1>
+            <div class="input-box">
+                <input type="date" id="date">
+                <button onclick="calculateAge()">Calculate</button>
+            </div>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script>
+        let userInput = document.getElementById('date');
+        userInput.max = new Date().toISOString().split("T")[0];
+        let result = document.getElementById('result');
+
+        function calculateAge() {
+            let birthDate = new Date(userInput.value);
+            if (!userInput.value) {
+                result.innerHTML = '<span style="color:red;">Please enter your birth date!</span>';
+                return;
+            }
+
+            let today = new Date();
+
+            let d1 = birthDate.getDate();
+            let m1 = birthDate.getMonth() + 1;
+            let y1 = birthDate.getFullYear();
+
+            let d2 = today.getDate();
+            let m2 = today.getMonth() + 1;
+            let y2 = today.getFullYear();
+
+            let day, month, year;
+            year = y2 - y1;
+
+            if (m2 >= m1) {
+                month = m2 - m1;
+            } else {
+                year--;
+                month = 12 + m2 - m1;
+            }
+
+            if (d2 >= d1) {
+                day = d2 - d1;
+            } else {
+                month--;
+                day = getDaysInMonth(y2, m2 - 1) + d2 - d1;
+                if (month < 0) {
+                    month = 11;
+                    year--;
+                }
+            }
+
+            result.innerHTML = `You are <span>${year}</span> years, <span>${month}</span> months, and <span>${day}</span> days old.`;
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+    </script>
+</body>
+
+</html>
